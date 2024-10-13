@@ -1,0 +1,3 @@
+#+title: Org-handout-template
+
+セミナーや授業等の配付資料（いわゆるレジュメ）を Emacs org-modeで作成し、PDFファイルを生成するためのテンプレート
