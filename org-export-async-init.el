@@ -1,15 +1,31 @@
-;; パス設定
+;; Set load paths to the system's emacs initializing directory.
 (let ((default-directory "~/.emacs.d/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-;; エクスポートの基本設定
+;; Load required packages
+(require 'ox-latex)
+(require 'citeproc)
+(require 'oc-basic)
+(require 'oc-csl)
+(require 'oc-biblatex)
+(require 'oc-natbib)
+
+;; basic export settings
 (setq org-export-with-smart-quotes t)
-(setq org-export-with-broken-links 'mark) ;; 内部リンク切れにマークをつける
-(setq org-export-with-toc nil) ;; デフォルトで目次を作らない
+(setq org-export-with-broken-links 'mark) 
+(setq org-export-with-toc nil) 
 (setq org-export-allow-bind-keywords t)
 (setq org-export-headline-levels 4)
 
-;; org-babelの設定
+(setq org-latex-text-markup-alist '((bold . "\\textbf{%s}")
+                                    (code . protectedtexttt)
+                                    (italic . "\\textit{%s}")
+                                    (strike-through . "\\sout{%s}")
+                                    (underline . "\\uline{%s}")
+                                    (verbatim . "\\verb|%s|")))
+
+
+;; org-babel settings
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)		      
@@ -21,36 +37,19 @@
    (sql . t)
    (sqlite . t)))
 
-;; 引用に関する設定
-(require 'citeproc)
-(require 'oc-basic)
-(require 'oc-csl)
-(require 'oc-biblatex)
-(require 'oc-natbib)
-
+;; citation setting
 (setq org-cite-global-bibliography
       (list (expand-file-name "references.bib" default-directory)))
-;; (setq org-cite-global-bibliography
-;;       '("/Users/yujitake/Dropbox/01-bib/references.bib"
-;;         "/Users/yujitake/Dropbox/01-bib/zotero.bib"))
-;;(setq org-cite-csl-styles-dir "/Users/yujitake/Dropbox/01-bib/csl")
 (setq org-cite-export-processors
       '((latex biblatex)
-        ;; (t csl "journal-of-animal-physiology-and-animal-nutrition.csl")
 	))
 
 
-;; Latexマークアップ設定
-(require 'ox-latex)
+;; latex compiler and pdf process setting
+(setq org-latex-compiler "lualatex")
+(setq org-latex-pdf-process '("latexmk -f %f"))
 
-(setq org-latex-text-markup-alist '((bold . "\\textbf{%s}")
-                                    (code . protectedtexttt)
-                                    (italic . "\\textit{%s}")
-                                    (strike-through . "\\sout{%s}")
-                                    (underline . "\\uline{%s}")
-                                    (verbatim . "\\verb|%s|")))
-
-;; タイトルの出力様式
+;; Title export setting
 (setq org-latex-subtitle-separate nil)
 (setq org-latex-subtitle-format ": %s")
 (setq org-latex-title-command "
@@ -80,11 +79,8 @@
 \\vspace{2em}
 \\rmfamily")
 
-;; LaTeXコンパイラとPDFプロセス
-(setq org-latex-compiler "lualatex")
-(setq org-latex-pdf-process '("latexmk -f %f"))
 
-;; LaTeXパッケージ設定
+;; default packages
 (setq org-latex-default-packages-alist '(("AUTO" "inputenc" t ("pdflatex"))
                                          ("T1" "fontenc" t ("pdflatex"))
                                          ("" "graphicx" t)
@@ -108,7 +104,7 @@
 					 ("" "abstract" t)
 					 ("" "float" t)))
 
-;; コードブロックの整形表示
+;; code blocks 
 (setq org-latex-listings t)
 (setq org-latex-listings-options
       '(("basicstyle" "\\ttfamily\\small")
@@ -124,7 +120,7 @@
         ("stepnumber" "1")))
 
 
-;; hyperrefの設定
+;; hyperref settings
 (setq org-latex-hyperref-template "
 \\hypersetup{setpagesize = false,
              pdfauthor={%a},
@@ -141,7 +137,7 @@
              bookmarks   = true}
 ")
 
-;; 文書クラスの設定
+;; class setting
 (setq org-latex-classes nil)
 (add-to-list 'org-latex-classes
 	     '("lecture-handout"
