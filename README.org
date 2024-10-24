@@ -1,3 +1,14 @@
-#+title: Org-handout-template
+* A Personal Configuration for Generating Documents from .org Files in Various Formats
 
-セミナーや授業等の配付資料（いわゆるレジュメ）を Emacs org-modeで作成し、PDFファイルを生成するためのテンプレート
+Although this project was created entirely for personal use, it may be useful to others. For that reason, the following usage instructions are provided:
+
+** Usage
+
+- Clone/Copy the Repository :: Clone or copy this repository into the directory where your working org files are stored (hereafter referred to as the “project directory”). Name the cloned or copied directory config.
+- Create Symbolic Links :: In the root of the project directory, create symbolic links to the following three files located inside the config directory:
+  - =.dir-locals.el -> config/dot.dir-locals.el=
+  - =.latexmkrc -> config/dot.latexmkrc=
+  - =biblatex.cfg -> config/biblatex.cfg=
+- Export from Org Files :: Start the org-export-dispatcher (C-c C-e) from within your org buffer. Currently, only LaTeX export is supported.
+  - If you’re using org-cite to insert citations, save the .bib file containing your references in the project directory as =references.bib=.
+    - The [[https://github.com/mlmbl/citar-extract-bibtex][citar-extract-bibtex]] tool might help you generate =references.bib= from your default bibliography file.
